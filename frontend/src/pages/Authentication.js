@@ -11,7 +11,7 @@ export async function action({request}){
 
   const mode =searchParams.get("mode")||'login';
 
-  if(mode!== 'login' || mode!== 'signup' ){
+  if(mode !== 'login' && mode!== 'signup' ){
     throw json({message:"unsupported mode"},{status:422})
   }
   const data = await request.formData();
@@ -19,7 +19,8 @@ export async function action({request}){
     email:data.get("email"),
     password:data.get('password')
   }
-  const response=await fetch("http://localhost:8080/"+mode,{
+  console.log(mode)
+  const response=await fetch("http://localhost:8080/" + mode,{
     method:"POST",
     headers:{
       "Content-Type":"application/json"
@@ -33,6 +34,13 @@ export async function action({request}){
     throw json({message:"Could not authentificate user"},{status:500});
 
   }
+  const resData=await response.json();
+  const token=resData.token;
+  localStorage.setItem("token",token);
+
+  const expiration=new Date();
+  expiration.setHours(expiration.getHours()+1);
+  localStorage.setItem("expiration",expiration.toISOString())
   return redirect("/")
   
 }
