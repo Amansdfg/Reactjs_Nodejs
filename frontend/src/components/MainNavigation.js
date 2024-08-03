@@ -1,6 +1,5 @@
 import {Form, NavLink, useRouteLoaderData} from 'react-router-dom';
-
-import classes from './MainNavigation.module.css';
+import classes from './MainNavigation.module. css';
 import NewsletterSignup from './NewsletterSignup';
 
 function MainNavigation() {
